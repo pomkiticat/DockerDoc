@@ -1,0 +1,126 @@
+
+
+Create postgres container :
+--------------------------------
+general command : 
+docker run --name <container name> -e POSTGRES_PASSWORD=<password> -p <port>:5432 -d <image> /postgres : for default ,<any_name> : if container create from any image
+
+---------------------------------------------------------------------------
+docker run --name postgres-dckr -e POSTGRES_PASSWORD=1234 -p 5455:5432 -d postgres
+
+docker run --name postgres-vol-doc  -p 5459:5432 -d gmta-test-vol
+
+docker run --name postgres-dckr-vol -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234  -p 5457:5432 --volume /var/lib/postgresql/data -d postgres
+
+
+
+docker exec -it  postgres-dckr bash
+docker exec -it gtma-test_v1 bash
+
+stop container
+-----------------
+docker stop <container>
+
+docker stop postgres
+
+remove container
+----------------------
+docker rm [OPTIONS] CONTAINER [CONTAINER...]
+
+
+remove all stop container
+----------------------------------
+docker rm $(docker ps -a -q)
+
+directly create database : default in 5432
+------------------------------------------------
+docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=GTMA_database library/postgres
+docker run -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=docker library/postgres
+
+
+
+psql -U postgres
+
+docker run -d postgres-dckr-t
+
+database name: GTMA_database
+
+https://stackoverflow.com/questions/26598738/how-to-create-user-database-in-script-for-docker-postgres
+
+https://stackoverflow.com/questions/55327571/postgresql-dockerfile-create-user-and-database-from-entrypoint-script
+
+
+
+docker run -d --name my-postgres-container -p 5555:5432 my-postgres-image
+
+docker build -t gmta-test .
+
+Create database any container
+---------------------------------
+docker exec -it <container> psql -U <postgres user> -c "CREATE DATABASE <database name> ENCODING '<encoding type>' TEMPLATE template0 LC_COLLATE '<type>' LC_CTYPE '<type>'";
+
+docker exec -it postgres-dckr psql -U postgres -c "CREATE DATABASE gmta ENCODING 'UTF-8' TEMPLATE template0 LC_COLLATE 'C' LC_CTYPE 'C';"
+
+Grand permission for database:
+-----------------------------------------
+docker exec -it <container> psql -U <postgres user> -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO <user>";
+
+docker exec -it postgres-dckr  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;"
+
+docker inspect -f '{{ json .Mounts }}' 59bf6a62540d | python -m json.tool
+
+Create dump file for container:
+------------------------------------------
+docker exec -t <container> pg_dumpall -c -U postgres > file.sql
+
+docker exec -t e3538af79676 pg_dumpall -c -U postgres > dump_`test`.sql
+
+
+docker run --name gtma-test_v1  -p 5435:5432 -d gmta-test:1.0.1
+docker run gmta-test 
+
+Build a dockerfile:
+-------------------------------
+docker build - < Dockerfile
+
+psql postgresql://postgres:123qwe@postgres:5432/gtma_database
+psql postgresql://postgres:123qwe@postgres:5435/gtma_database
+
+psql -h localhost -p 5435 -U postgres -d gtma_database
+
+docker run --name gtma_all_in  -p 5461:5432 -d gtma_all:1.0.0
+
+ psql -U postgres gtma_database  - - to enter gtma_database
+ 
+
+ 
+ docker container cp createTable.sql gtma_database:/
+ 
+ docker  exec -it gtma-test_v1 psql --dbname=gtma_database --username postgres -f /createTable.sql
+ 
+ 
+ docker cp ./gtma_latest.sql gtma-test_v1:/docker-entrypoint-initdb.d/gtma_latest.sql
+docker exec -u postgres gtma-test_v1 psql gtma_database postgres -f docker-entrypoint-initdb.d/gtma_latest.sql
+
+docker exec -i gtma-test_v1 pg_restore gtma_database postgres -f docker-entrypoint-initdb.d/gtma_latest.sql
+
+docker cp ./localfile.sql containername:/container/path/file.sql
+docker exec -u postgresuser containername psql dbname postgresuser -f /container/path/file.sql
+
+docker exec -it gtma-test_v1 bash pg_restore -d gtma_database -v -1 gtma_latest.sql
+
+docker exec -it gtma-test_v1 bash pg_restore -h localhost -p 5435 -U postgres -d my_new_database my_old_database.backup
+
+
+pg_restor -d gtma_database -v -1 gtma_latest.sql
+
+ docker cp ./gtma_latest.sql postgres-dckr-vol:/gtma_latest.sql
+
+
+docker exec -i 0d96d6b59d74 pg_restore -U postgres -d test < gtma_latest.sql
+docker exec -i 791f8946fa94 pg_restore -U postgres -v -d test < gtma_latest.sql
+
+
+docker build --no-cache -t gtma_all:1.0.0 .
+
+docker-compose exec -T postgres-sh pg_restore -d gtma -U postgres </tmp/gtma_latest.sql

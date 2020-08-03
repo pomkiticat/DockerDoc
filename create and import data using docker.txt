@@ -1,0 +1,26 @@
+init.sql 
+==================
+CREATE USER postgres WITH PASSWORD '123qwe';
+CREATE DATABASE gmta_database 
+GRANT ALL PRIVILEGES ON DATABASE gmta_database TO postgres;
+
+
+DockerFile:
+=============================
+FROM postgres:latest
+COPY init.sql /docker-entrypoint-initdb.d/
+
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD 123qwe 
+ENV POSTGRES_DB docker_pg 
+
+EXPOSE 5432
+COPY gtma_latest.sql /
+
+VOLUME /var/lib/postgresql/data
+
+Docker command:
+==============================
+docker build -t gmta-test-vol:1.0.0 .   --for create docker iamge
+docker run --name postgres-vol-doc  -p 5459:5432 -d gmta-test-vol:1.0.0   --for create docker container
+docker exec -i 8f45fa84d1e7 pg_restore -U postgres -v -d docker_pg < gtma_latest.sql  : run pg_restore

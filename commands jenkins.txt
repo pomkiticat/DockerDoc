@@ -1,0 +1,33 @@
+1. create a container of jenkins
+2. configure jenkins plugin
+3. 
+
+
+
+
+create jenkins :
+docker pull jenkins/jenkins
+
+#docker run -p 8080:8080 --name=jenkins-master jenkins/jenkins
+
+docker run -d --restart=always -u root --name jenkins --link socat:socat  -p 8080:8080 -p 50000:50000 -v /root/jenkins_2112:/var/jenkins_home  jenkins/jenkins:latest  --run and connect but not found the docker
+
+docker run -d --restart=always -u root --name jenkins --link socat:socat  -p 8080:8080 -p 50000:50000 -v /root/jenkins_2112:/var/jenkins_home  jenkins/jenkins:latest
+ docker run -d --name my-jenkins -v /var/jenkins_home:~/.jenkins  -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 jenkins
+create socat :
+docker pull 
+
+docker run -d --restart=always -p 127.0.0.1:2376:2375 -v /var/run/docker.sock:/var/run/docker.sock alpine/socat tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+
+docker run -d --restart=always --name=socat -p 127.0.0.1:2376:2375 -v /var/run/docker.sock:/var/run/docker.sock alpine/socat tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+
+
+
+for view the frist password
+docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+PIPE:\\.\pipes\docker_engine
+
+docker run -d -p 8080:8080 --link socat:socat jenkins
+
+docker run -p 2375:2375 -v /var/run/docker.sock:/var/run/docker.sock codenvy/socat -d -d TCP-L:2375,fork UNIX:/var/run/docker.sock

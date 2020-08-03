@@ -1,0 +1,21 @@
+10/7/20202
+
+https://stackoverflow.com/questions/48643774/how-to-restore-a-postgresdump-while-building-a-docker-image
+https://stackoverflow.com/questions/39267377/pg-restore-in-postgres-docker-container
+https://stackoverflow.com/questions/33309121/using-docker-compose-to-create-tables-in-postgresql-database
+
+https://kodekloud.com/courses/911976/lectures/16792271
+https://kodekloud.com/courses/911976/lectures/16792260
+
+
+https://stackoverflow.com/questions/49024243/how-do-i-create-a-database-within-a-docker-container-using-only-the-docker-compo
+
+jenkins :
+======================
+https://www.katacoda.com/courses/jenkins/build-docker-images
+
+https://medium.com/@karthi.net/docker-tutorial-build-docker-images-using-jenkins-d2880e65b74
+
+https://medium.com/@karthi.net/docker-tutorial-build-docker-images-using-jenkins-d2880e65b74
+
+https://www.youtube.com/watch?v=75uH46rOQaM
